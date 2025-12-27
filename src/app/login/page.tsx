@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
+import { toast } from "sonner"
 
 export default function LoginPage() {
     const router = useRouter()
@@ -16,10 +17,16 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false)
 
     const login = async () => {
-        setLoading(true)
-        await signInWithEmailAndPassword(auth, email, password)
-        router.replace("/dashboard")
-    }
+        try {
+            setLoading(true)
+            await signInWithEmailAndPassword(auth, email, password)
+            router.replace("/dashboard")
+        } catch  {
+            toast.error("Failed to sign in")
+        } finally {
+            setLoading(false)
+        }
+    }   
 
     return (
         <div className="min-h-screen flex items-center justify-center px-4">

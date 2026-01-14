@@ -1,76 +1,40 @@
-"use client"
+import { AppSidebar } from "@/components/app-sidebar"
+import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+import { DataTable } from "@/components/data-table"
+import { SectionCards } from "@/components/section-cards"
+import { SiteHeader } from "@/components/site-header"
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
 
-import AdminGuard from "@/components/admin-guard"
-import { auth } from "@/utils/client-credentials"
-import { signOut } from "firebase/auth"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { LogOut, LayoutDashboard } from "lucide-react"
+import data from "./data.json"
 
-export default function DashboardPage() {
-    return (
-        <AdminGuard>
-            <section className="p-4 sm:p-6 space-y-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <LayoutDashboard className="h-5 w-5 text-muted-foreground" />
-                        <h1 className="text-2xl font-semibold tracking-tight">
-                            Dashboard
-                        </h1>
-                    </div>
-
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => signOut(auth)}
-                        className="gap-2"
-                    >
-                        <LogOut className="h-4 w-4" />
-                        Logout
-                    </Button>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-sm font-medium text-muted-foreground">
-                                Overview
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <span className="text-3xl font-semibold tracking-tight">
-                                Admin
-                            </span>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-sm font-medium text-muted-foreground">
-                                Status
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <span className="text-3xl font-semibold tracking-tight">
-                                Active
-                            </span>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-sm font-medium text-muted-foreground">
-                                Access
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <span className="text-3xl font-semibold tracking-tight">
-                                Full
-                            </span>
-                        </CardContent>
-                    </Card>
-                </div>
-            </section>
-        </AdminGuard>
-    )
+export default function Page() {
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              <SectionCards />
+              <div className="px-4 lg:px-6">
+                <ChartAreaInteractive />
+              </div>
+              <DataTable data={data} />
+            </div>
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }
